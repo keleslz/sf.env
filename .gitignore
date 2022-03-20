@@ -1,0 +1,8 @@
+*
+
+!.env
+!.gitignore
+!.htaccess
+!docker-compose.yaml
+!Dockerfile
+!Readme.md

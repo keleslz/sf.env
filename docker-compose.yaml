@@ -7,5 +7,5 @@ services:
     ports:
       - 8080:80
     volumes:
-      - ./sf:/var/www/html
+      - ./${APP_NAME}:/var/www/html
 
