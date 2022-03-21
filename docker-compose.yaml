@@ -5,7 +5,7 @@ services:
     image: php:8.0-apache
     build: .
     ports:
-      - 8080:80
+      - ${PORT}:80
     volumes:
       - ./${APP_NAME}:/var/www/html
 
