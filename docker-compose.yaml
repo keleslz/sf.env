@@ -1,11 +1,42 @@
 version: '3'
 
 services:
-  php:
-    image: php:8.0-apache
-    build: .
-    ports:
-      - ${PORT}:80
-    volumes:
-      - ./${APP_NAME}:/var/www/html
+    php:
+        build: .
+        ports:
+            - 8080:80
+        environment:
+            DATABASE_HOST: ${DB_HOST}
+            DATABASE_NAME: ${DB_NAME}
+            DATABASE_USER: ${DB_USER}
+            DATABASE_PASSWORD: ${DB_PASSWORD}
+            DATABASE_PORT: ${DB_PORT}
+            DATABASE_SERVER_VERSION: mysql:${MYSQL_VERSION}
+            DATABASE_URL: mysql://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+            CORS_ALLOW_ORIGIN: ${CORS_ALLOW_ORIGIN}
+        volumes:
+            - ./api.distor.fr:/var/www
+
+    db:
+        image: mysql:${MYSQL_VERSION}
+        environment:
+            MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+            MYSQL_DATABASE: ${DB_NAME}
+            MYSQL_USER: ${DB_USER}
+            MYSQL_PASSWORD: ${DB_PASSWORD}
+        ports:
+            - 9191:80
+        volumes:
+            - ./.data/db:/var/lib/mysql
+
+    phpmyadmin:
+        image: phpmyadmin
+        restart: always
+        ports:
+            - 9090:80
+        environment:
+            PMA_USER: root
+            PMA_PASSWORD: ${DB_ROOT_PASSWORD}
+        depends_on:
+            - db
 
